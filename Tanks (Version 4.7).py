@@ -29,7 +29,7 @@ def Login(*args):
     passcheck = True
     users = ['','']
 
-    for u in range(2):
+    for u in range(2): # Checking usename and password
         get = user1.get() if u==0 else user2.get()
         password = p1 if u==0 else p2
         for i in range(len(get)): # to prevent entry of bad data
