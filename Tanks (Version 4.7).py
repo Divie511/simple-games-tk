@@ -9,10 +9,6 @@ version = '4.7'
 from tkinter import *
 from random import *
 import time, importlib, playerdata
-# from playerdata import * This can not be done since playerdata must be imported as module for it to be reloaded
-# importlib is required to reload modules
-
-# some important definitions... window starts in the end
 
 # GLOBAL VARIABLES:
 GameState, hit, HT, dmg = 1, -1, 'nil', 0
@@ -27,14 +23,14 @@ GameState, hit, HT, dmg = 1, -1, 'nil', 0
 
 def Login(*args):
     global login_message # in case player enters incorrect password, this would be configred to display the message
-    p1,p2 = pass1.get(),pass2.get()
+    p1,p2 = pass1.get(),pass2.get() # pass1 and pass2 are entry boxes which recieve entered passwords
     passcheck = True
-    users = ['','']
+    users = ['',''] # this will store usernames
 
     for u in range(2): # Checking usename and password
-        get = user1.get() if u==0 else user2.get()
+        get = user1.get() if u==0 else user2.get() # user1 and user2 are entry boxes which recieve entered usernames
         password = p1 if u==0 else p2
-        for i in range(len(get)): # to prevent entry of bad data
+        for i in range(len(get)): # correcting usernames to prevent entry of bad data
             if ( not get[i].isalnum() ): users[u]+='_' # bad data will be converted to _
             else: users[u]+=get[i]
         if len(get)==0: users[u]='_' # in case of empty username
@@ -48,29 +44,30 @@ def Login(*args):
 
     u1, u2 = users[0], users[1]
     importlib.reload(playerdata) # loads modified playerdata file with new users registered
+    
     if u1==u2: login_message.config(text='Please enter different usernames.')
     elif passcheck: LoadGame(u1,u2)
     else: login_message.config(text='Password(s) entered are incorrect!')
 
-def DoNothing(*args): return # a useless function that would be the command of a disabled button
+def DoNothing(*args): return # a useless function that would be the command of a disabled button or key press
 
 def LoadGame(u1,u2):
     global p1,p2,hp1,hp2,a1,a2,a3,a4,messagebox,hb1,hb2,canvas2x,warriorA,warriorB,w1,w2,canvas73,game_window
     w1 = Warrior(playerdata.userlist.get(u1))
     w2 = Warrior(playerdata.userlist.get(u2))
-    introFrame.destroy() # it's obvious, isn't it?
+    introFrame.destroy() # introFrame is where you recieve the introduction message. Now that the game has begun, we delete it.
 
     mainCanvas = Canvas(game_window,height=250,width=400, bg='#000') # This is where all the graphical stuff will be stored
     mainCanvas.pack()
 
-    canvas73=Canvas(mainCanvas,height=250,width=400,bg="#000") # Let's draw!
+    canvas73=Canvas(mainCanvas,height=250,width=400,bg="#000") # Tanks, stars and game title is displayed here
     canvas73.pack()
     frame=Frame(game_window)
     frame.pack()
 
     LoadObjects()
     LoadTitle()
-    
+
     frame1 = Frame(game_window, bg="#000") # warrior name labels in here
     frame1.pack(side = TOP)
     p1 = Label(frame1, text = w1, bg = '#222', fg = '#fff', width = 28)
@@ -113,10 +110,10 @@ def LoadGame(u1,u2):
 
 def SetGame(): # this function will make display changes acc to GameState
     global warriorA,warriorB,dmg,hit,p1,p2,hp1,hp2,a1,a2,a3,a4,messagebox,canvas2x,hb1,hb2,HT,canvas73
-    if GameState == 1: # attack mode
+    if GameState == 1: # ATTACK mode
         warriorA, warriorB = warriorB, warriorA
         if warriorA == w1:
-            p2.config(bg = '#222', fg = '#fff')
+            p2.config(bg = '#222', fg = '#fff') # highlighting name and health labels according to active player
             p1.config(bg = '#000', fg = '#10ff00')
             hp2.config(bg = '#222')
             hp1.config(bg = '#000')
@@ -125,30 +122,30 @@ def SetGame(): # this function will make display changes acc to GameState
             p2.config(bg = '#000', fg = '#10ff00')
             hp1.config(bg = '#222')
             hp2.config(bg = '#000')
-        a1.config(bg = '#000', command = atk1, cursor = 'hand2') # The attacks are all functional in these states
+        a1.config(bg = '#000', command = atk1, cursor = 'hand2') # Enabling attack buttons
         a2.config(bg = '#000', command = atk2, cursor = 'hand2')
         a3.config(bg = '#000', command = atk3, cursor = 'hand2')
-        game_window.bind('replenish',heal)
+        game_window.bind('replenish',heal) # Enabling cheat codes
         game_window.bind('annihilate',destroy)
         game_window.bind('eagleeye',focus)
         # game_window.bind('avadakedavra',kill) # rare instant kill
-        messagebox.config(text = f'It\'s {warriorA}\'s turn to attack.') # The game isn't paused, it's player's chance to make a move!
+        messagebox.config(text = f'It\'s {warriorA}\'s turn to attack.')
 
-    else: # other GameStates don't allow using attack buttons and cheats -- and that's the PAUSE mode
-        a1.config(bg = 'grey', command = ChangeGameState, cursor = 'arrow')
-        a2.config(bg = 'grey', command = ChangeGameState, cursor = 'arrow')
+    else: # INACTIVE mode
+        a1.config(bg = 'grey', command = ChangeGameState, cursor = 'arrow') # disabling attack buttons
+        a2.config(bg = 'grey', command = ChangeGameState, cursor = 'arrow') # ChangeGameState will switch the game back to attack mode
         a3.config(bg = 'grey', command = ChangeGameState, cursor = 'arrow')
         canvas2x.delete(hb1) # delting original health bars
         canvas2x.delete(hb2)
-        hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.colour) # creating new health bars with new health
+        hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.colour) # creating new health bars with updated health
         hb2=canvas2x.create_rectangle(400-w2.health*1.5,0,400,7,fill = w2.colour)
-        game_window.bind('replenish',DoNothing)
+        game_window.bind('replenish',DoNothing) # disabling cheat codes
         game_window.bind('annihilate',DoNothing)
         game_window.bind('eagleeye',DoNothing)
         # game_window.bind('avadakedavra',DoNothing)
 
-    if GameState == 0: # game is paused right? and it isn't over yet
-        game_window.bind('<Key>', ChangeGameState)
+    if GameState == 0: # TANSITION mode ie inactive, yet not game over
+        game_window.bind('<Key>', ChangeGameState) # Press any key to continue...
         game_window.bind('<Return>',ChangeGameState)
         # ChangeGameState (in this case) sets the opponent to attack mode
         if HT=='Heal': commentline = '20 health was gained.'
@@ -159,40 +156,41 @@ def SetGame(): # this function will make display changes acc to GameState
         if dmg>=30: commentline = f'{HT} caused a massive {dmg} damage to {warriorB}'
         messagebox.config(text = f'{warriorA} uses {HT}.\n'+commentline)
 
-        if HT == 'Heal':
+        if HT == 'Heal': # in case of cheat code 'replenish'
             if warriorA == w1: # health label of Player 1 displays heal
                 hp1.config(fg = '#10ff00', text = '+20')
             else: # health label of Player 2 displays heal
                 hp2.config(fg = '#10ff00', text = '+20')
-        elif HT == 'Focus':
-            if warriorA == w1: # health label of Player 1 displays heal
+        elif HT == 'Focus': # in case of cheat code 'focus'
+            if warriorA == w1: # health label of Player 1 displays special message
                 hp1.config(fg = '#ffc400', text = '++')
-            else: # health label of Player 2 displays heal
+            else: # health label of Player 2 displays special message
                 hp2.config(fg = '#ffc400', text = '++')
-        else: # after the player has used their attack
+        else: # in other cases (when attacked)
             beam()
             if warriorA == w1: # health bar of Player 2 displays damage taken
                 hp2.config(fg = '#bcff00', text = f'-{dmg}')
             else: # health bar of Player 1 displays damage taken
                 hp1.config(fg = '#bcff00', text = f'-{dmg}')            
 
-    else: # This must be easily understood
-        game_window.bind('<Key>', DoNothing)
-        hp1.config(fg = w1.colour, text = w1.health)
-        hp2.config(fg = w2.colour, text = w2.health)
+    else:
+        game_window.bind('<Key>', DoNothing) # disabling press any key to continue
         game_window.bind('<Return>',DoNothing)
+        hp1.config(fg = w1.colour, text = w1.health) # don't display damage taken/heal etc now
+        hp2.config(fg = w2.colour, text = w2.health)
         del_beam()
 
     if GameState == 100: # If the one of the players dies
-        a1.config(command = DoNothing)
+        a1.config(command = DoNothing) # disabling attacks, GameState is not be be changed now
         a2.config(command = DoNothing)
         a3.config(command = DoNothing)
-        ccc = '' if not warriorA.cheat else '\n(Cheat codes used)'
+        ccc = '' if not warriorA.cheat else '\n(Cheat codes used)' # cheating will be mentioned in the final report
         messagebox.config(text = f'{warriorA} wins!' + ccc)
         canvas73.destroy()
-        if not warriorA.cheat:
-            playerdatafile = open('playerdata.py', mode='a', encoding='utf-8')
-            playerdatafile.write(f'\n{warriorA}.xp+=1')
+        if not warriorA.cheat: # cheating means your player stats won't be updated
+            x = 3 if warriorB.cheat else 1 # if the opponent was cheating but you still won, you deserve bonus XP!
+            playerdatafile = open('playerdata.py', mode='a', encoding='utf-8') # updating playerdata
+            playerdatafile.write(f'\n{warriorA}.xp+={x}')
             playerdatafile.close()
 
     dmg, hit, HT = 0, -1, 'nil' # resetting the values so that the it's not the same in the next turn
@@ -200,9 +198,9 @@ def SetGame(): # this function will make display changes acc to GameState
 def ChangeGameState(*args):
     global GameState
     if warriorB.health == 0 and GameState == 0: GameState = 100 # Opponent just died? That's game over!
-    elif GameState == 1: GameState = 0 # This switches to PAUSE state after Player has used his attack
-    elif GameState == 0: GameState = 1 # Switches back to attack mode
-    SetGame() # Who will apply the changes in GameState, huh?
+    elif GameState == 1: GameState = 0 # This switches to TANSITION state after Player has used his attack or cheat
+    elif GameState == 0: GameState = 1 # Switches back to ATTACK mode
+    SetGame() # Applying changes in GameState
 
 '''----------------WARRIOR CLASS-------------------'''
 class Warrior:
@@ -218,8 +216,8 @@ class Warrior:
     def __str__(self): # This magic method makes the object return its name when called in as a string
         return self.name # i.e. You just have to write down the 'object' instead of 'object.name' to add it's name to strings
 
-    @property # this means self.colour is a property just like self.health and self.name and not self.colour()
-    def colour(self): # it is created as a method because it is dependent on health and is to be reassigned whenever health changes
+    @property # this means self.colour is a property just like self.health and self.name and not a method self.colour()
+    def colour(self): # it is created as a method property because it is dependent on health and is to be reassigned whenever health changes
         if self.health > 70: return '#10ff00'
         elif self.health > 60: return '#55ff00'
         elif self.health > 50: return '#77ff00'
@@ -228,7 +226,7 @@ class Warrior:
         elif self.health > 20: return '#ff8000'
         else: return '#ff0000'
 
-def accurate(x):
+def accurate(x): # trying probability to see if attack works or not
     if warriorA.accuracy == 10: return True
     rtrn = warriorA.accuracy*random()
     return True if rtrn > 1-x else False
@@ -274,19 +272,18 @@ def kill(*args): # avadakedavra --> instant kill
 def focus(*args): # eagleeye
     global HT
     HT = 'Focus'
-    warriorA.accuracy = 10
+    warriorA.accuracy = 10 # 100% accuracy, never miss an attack!
     warriorA.cheat = True
     ChangeGameState()
 
-def GetDamage():
+def GetDamage(): # final result of damage is calculated here
     global hit, warriorA, warriorB, dmg
     block = warriorB.maxBlock*uniform(0.3,0.6)
     dmg = int(hit - block)
     if dmg<=0: dmg=0
-    warriorB.health -= dmg # health is all what matters
+    warriorB.health -= dmg # reducing health by the amount of damage taken
     if warriorB.health<=0: warriorB.health=0
-    # You have used your attack, right? That's the only case if this function was called. So now let's switch to PAUSE mode
-    ChangeGameState()
+    ChangeGameState() # switching to TRANSITION mode
 
 '-------------Loading Objects---------------'
 def del_beam(): # to delete tank beam
@@ -325,7 +322,7 @@ def LoadObjects():
         canvas73.create_line(280+i,225,325,75+i,fill="#ff0000")
     #ground
     ground=canvas73.create_rectangle(0,225,400,250,fill="#a52a2a")
-def LoadTitle():
+def LoadTitle(): # very hefty work... you can ignore this part as it requires no modifications
     T_top=canvas73.create_rectangle(80,20,130,40,outline="#ffff00")
     T_bot=canvas73.create_rectangle(100,40,110,80,outline="#ffff00")
     A_left1=canvas73.create_line(170,20,140,80,fill="#ffff00")
@@ -351,7 +348,7 @@ def LoadTitle():
     S_mid=canvas73.create_rectangle(295,50,315,55,outline="#ffff00")
     S_right=canvas73.create_rectangle(310,55,315,75,outline="#ffff00")
     S_bot=canvas73.create_rectangle(295,75,315,80,outline="#ffff00")
-def winScreen():
+def winScreen(): # incomplete function! need someone to create the ending 'CONGRATULATIONS' screen
     pass
 
 introMessage = """This game was made by Divyam Joshi and K. Aditya. Copyright (c) 2019. All rights reserved.\n
@@ -373,13 +370,13 @@ def introScreen():
     fu1.pack(side=LEFT)
     u1 = Label(fu1, bg = '#000', fg = '#fff', text = 'Username: ')
     u1.pack(side=LEFT)
-    user1 = Entry(fu1)
+    user1 = Entry(fu1) # this is where username is entered
     user1.pack(side=RIGHT)
     fp1 = Frame(f1)
     fp1.pack(side=RIGHT)
     p1 = Label(fp1, bg = '#000', fg = '#fff', text = 'Password: ')
     p1.pack(side=LEFT)
-    pass1 = Entry(fp1, show = '*')
+    pass1 = Entry(fp1, show = '*') # and this is where password is entered
     pass1.pack(side=RIGHT)
     fx1 = Frame(introFrame, height = 10, bg = '#000')
     fx1.pack()
@@ -403,9 +400,9 @@ def introScreen():
     login_message = Label(f3, bg='#000', fg='#ff0000')
     login_message.pack()
     f3.pack()
-    game_window.bind('<Return>',Login)
-    ok = Button(f3, text = 'Login', bg = '#000', fg = '#10ff00', command = Login, cursor = 'hand2')
-    ok.pack() # LoadGame function creates a new screen with the main game stuff
+    game_window.bind('<Return>',Login) # press enter to login
+    ok = Button(f3, text = 'Login', bg = '#000', fg = '#10ff00', command = Login, cursor = 'hand2') # Login function
+    ok.pack()
     fx2 = Canvas(introFrame,width=560, height = 15, bg = '#000',highlightbackground="#000")
     fx2.pack()
     fx2.create_text(545,7,fill="#ffff00",text=f"v{version}")
