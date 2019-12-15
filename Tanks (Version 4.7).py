@@ -4,7 +4,7 @@
 
 # you can download and make contributions to the game from Divyam's GitHub repository https://github.com/iamgroot9/iamgroot
 
-version = '4.7'
+version = '4.7.1'
 
 from tkinter import *
 from random import *
