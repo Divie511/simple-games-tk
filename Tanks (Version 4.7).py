@@ -2,6 +2,8 @@
 """-----------------------CURRENT VERSION : 4.7-----------------------"""
 """----------------------UPDATED 14 DECEMBER 2019---------------------"""
 
+# you can download and make contributions to the game from Divyam's GitHub repository https://github.com/iamgroot9/iamgroot
+
 version = '4.7'
 
 from tkinter import *
