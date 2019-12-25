@@ -1,10 +1,10 @@
 """---------------CREATED BY DIVYAM JOSHI AND K. ADITYA---------------"""
-"""-----------------------CURRENT VERSION : 4.8-----------------------"""
-"""----------------------UPDATED 15 DECEMBER 2019---------------------"""
+"""-----------------------CURRENT VERSION : 4.9-----------------------"""
+"""----------------------UPDATED 25 DECEMBER 2019---------------------"""
 
 # you can download and make contributions to the game from Divyam's GitHub repository https://github.com/iamgroot9/iamgroot
 
-version = '4.8 x2'
+version = '4.9'
 
 from tkinter import *
 from random import *
@@ -230,6 +230,7 @@ class Warrior:
 
     @property # this means self.colour is a property just like self.health and self.name and not a method self.colour()
     def colour(self): # it is created as a method property because it is dependent on health and is to be reassigned whenever health changes
+        if self.health < 35: self.blow()
         if self.health > 70: return '#10ff00'
         elif self.health > 60: return '#55ff00'
         elif self.health > 50: return '#77ff00'
@@ -237,6 +238,22 @@ class Warrior:
         elif self.health > 30: return '#ffdd00'
         elif self.health > 20: return '#ff8000'
         else: return '#ff0000'
+        
+    def blow(self): pass
+
+    def tank(self):
+        if w1==self:
+            self.base=canvas73.create_rectangle(0,150,75,225,fill="#008000",outline="#008000")
+            self.top=canvas73.create_rectangle(30,100,50,150,fill="#008000",outline="#008000")
+            self.turret=canvas73.create_rectangle(50,125,75,135,fill="#008000",outline="#008000")
+            for i in range(0,150):
+                canvas73.create_line(75,75+i,120-i,225,fill="#008000")
+        else:
+            self.base=canvas73.create_rectangle(325,150,400,225,fill="#ff0000",outline="#ff0000")
+            self.top=canvas73.create_rectangle(355,100,375,150,fill="#ff0000",outline="#ff0000")
+            self.turret=canvas73.create_rectangle(320,125,355,135,fill="#ff0000",outline="#ff0000")
+            for i in range(0,150):
+                canvas73.create_line(280+i,225,325,75+i,fill="#ff0000")
 
 def accurate(x): # trying probability to see if attack works or not
     if warriorA.accuracy == 10: return True
@@ -305,24 +322,12 @@ def beam(): # to create tank beam
         my_rect3=canvas73.create_rectangle(205,125,320,135,fill="#ffff00")
 
 def LoadObjects():
-    global t1_base,t1_top,t1_turret,t2_base,t2_top,t2_turret
     # STAR WARS
     for i in range(40):
         canvas73.create_text(400*random(),220*random(),fill="#fff",text="*")
-    # tank1
-    t1_base=canvas73.create_rectangle(0,150,75,225,fill="#008000",outline="#008000")
-    t1_top=canvas73.create_rectangle(30,100,50,150,fill="#008000",outline="#008000")
-    t1_turret=canvas73.create_rectangle(50,125,75,135,fill="#008000",outline="#008000")
-    #front1
-    for i in range(0,150):
-        canvas73.create_line(75,75+i,120-i,225,fill="#008000")
-    #tank2
-    t2_base=canvas73.create_rectangle(325,150,400,225,fill="#ff0000",outline="#ff0000")
-    t2_top=canvas73.create_rectangle(355,100,375,150,fill="#ff0000",outline="#ff0000")
-    t2_turret=canvas73.create_rectangle(320,125,355,135,fill="#ff0000",outline="#ff0000")
-    #front2
-    for i in range(0,150):
-        canvas73.create_line(280+i,225,325,75+i,fill="#ff0000")
+    w1.tank()
+    w2.tank()
+    
     #ground
     ground=canvas73.create_rectangle(0,225,400,250,fill="#a52a2a")
 def LoadTitle(): # very hefty work... you can ignore this part as it requires no modifications

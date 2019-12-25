@@ -65,3 +65,12 @@ _.xp+=1
 Batman.xp+=1
 a=Player("a","")
 userlist["a"]=a
+
+Divyam.xp+=1
+Spider_Man.xp+=1
+Batman.xp+=1
+Batman.xp+=1
+Batman.xp+=1
+Batman.xp+=3
+Batman.xp+=1
+Batman.xp+=1
