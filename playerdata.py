@@ -74,3 +74,4 @@ Batman.xp+=1
 Batman.xp+=3
 Batman.xp+=1
 Batman.xp+=1
+Divyam.xp+=1
