@@ -1,4 +1,4 @@
-#Games made by Divyam Joshi
+# Games made by Divyam Joshi
 
 Hi all! Here I present my collection of all the games I have made in Python.
 
