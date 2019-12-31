@@ -43,7 +43,7 @@ class box:
         if state == 1:
             count += 1
         if count == 85 and state != 2:
-            messagebox.config(text = "You win! :D")
+            messagebox.config(text = "You win! :D", fg = "green")
             state = 2
         
     def mark(self, event):
@@ -71,7 +71,7 @@ def Endgame():
     for i in boxlist:
         if i.mine: i.unlock("GameOver")
     state = 2
-    messagebox.config(text = "Game Over :(")
+    messagebox.config(text = "Game Over :(", fg = "#ff0000")
 
 def opennearby(b):
     for r in range(b.row-1,b.row+2):
