@@ -19,7 +19,9 @@ class tile:
         self.frame = Frame(mainframe, width = 30, height = 30, borderwidth = 1, relief="groove")
         self.frame.grid(row = self.row, column = self.col)
         self.frame.pack_propagate(0) # to fix the frame size
-        self.Tile = Button(self.frame, text = self.value, font = (None,15), command = lambda: move(self), relief="flat")
+        self.Tile = Label(self.frame, text = self.value, font = (None,15))
+        self.frame.bind("<Button-1>",lambda x: move(self))
+        self.Tile.bind("<Button-1>",lambda x: move(self))
         self.Tile.pack()
         
     def update(self, row, col): # this method will be called when the tile is being moved to an empty grid
@@ -45,12 +47,20 @@ def win(c):
     global state
     if c:
         empty.Tile.config(text = 16)
-        messagebox.config(text = "You win!")
         state = 2
+        tileslist[0].Tile.config(text = "Y")
+        tileslist[1].Tile.config(text = "O")
+        tileslist[2].Tile.config(text = "U")
+        tileslist[3].Tile.config(text = " ")
+        tileslist[4].Tile.config(text = "W")
+        tileslist[5].Tile.config(text = "I")
+        tileslist[6].Tile.config(text = "N")
+        tileslist[7].Tile.config(text = "!")
     else: # undoing false win due to accidental reversal of moves
         empty.Tile.config(text = " ")
-        messagebox.config(text = " ")
         state = 1
+        for i in tileslist:
+            i.Tile.config(text = i.value)
 
 def select(r,c):
     for i in tileslist:
@@ -89,8 +99,6 @@ tileslist = []
 for i in range(1,17):
     tileslist.append(tile(i))
 
-messagebox = Label(mainframe,text = "")
-messagebox.grid(row = 4, column = 0, columnspan = 4)
 window.resizable(0,0)
 scramble()
 
