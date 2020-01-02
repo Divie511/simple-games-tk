@@ -1,4 +1,3 @@
-<<<<<<< HEAD:Number Puzzle v1.1.py
 from tkinter import *
 import random
 
