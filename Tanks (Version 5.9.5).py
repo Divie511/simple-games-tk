@@ -152,6 +152,9 @@ def tank_colour(u1,u2):
     green2.bind("<Button-1>",lambda x: setColour(green2,w2,'green'))
     orange2.bind("<Button-1>",lambda x: setColour(orange2,w2,'orange'))
     
+    setColour(blue1,w1,'blue')
+    setColour(green2,w2,'green')
+    
     Button(frame,text="OK",command = lambda: LoadGame(frame)).grid(row=3,column=1,columnspan=2)
     
 def LoadGame(frame):
