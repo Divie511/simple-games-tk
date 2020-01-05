@@ -1,6 +1,6 @@
 """---------------CREATED BY DIVYAM JOSHI AND K. ADITYA---------------"""
-"""-----------------------CURRENT VERSION : 5.8-----------------------"""
-"""-------------------------UPDATED 1 JAN 2019------------------------"""
+"""-----------------------CURRENT VERSION : 5.9-----------------------"""
+"""-------------------------UPDATED 5 JAN 2019------------------------"""
 
 # you can download and make contributions to the game from Divyam's GitHub repository https://github.com/iamgroot9/iamgroot
 
@@ -13,7 +13,7 @@ if playerdata.version < 1.1:
     print("Please update playerdata.py")
     quit()
 
-version = '5.8'
+version = '5.9.4'
 
 try:
     from tkinter import *
@@ -35,7 +35,7 @@ GameState, hit, HT, dmg = 1, -1, 'nil', 0
 # HT carries the attack name to be displayed
 
 def Login(*args):
-    global login_message # in case player enters incorrect password, this would be configred to display the message
+    global login_message,u1,u2,w1,w2 # in case player enters incorrect password, this would be configred to display the message
     p1,p2 = pass1.get(),pass2.get() # pass1 and pass2 are entry boxes which recieve entered passwords
     passcheck = True
     users = ['',''] # this will store usernames
@@ -59,7 +59,7 @@ def Login(*args):
     importlib.reload(playerdata) # loads modified playerdata file with new users registered
     
     if u1==u2: login_message.config(text='Please enter different usernames.')
-    elif passcheck: LoadGame(u1,u2)
+    elif passcheck: tank_colour(u1,u2)
     else: login_message.config(text='Password(s) entered are incorrect!')
 
 def DoNothing(*args): return # a useless function that would be the command of a disabled button or key press
@@ -84,17 +84,81 @@ def on_leave(event=None,*args):
     a1.config(fg='#fff')
     a2.config(fg='#fff')
     a3.config(fg='#fff')
-
-def LoadGame(u1,u2):
-    global p1,p2,hp1,hp2,a1,a2,a3,a4,messagebox,hb1,hb2,canvas2x,TankA,TankB,w1,w2,canvas73,game_window,l1,l2,mainCanvas
+    
+def tank_colour(u1,u2):
+    global frame,w1,w2
     w1 = Tank(playerdata.userlist.get(u1))
     w2 = Tank(playerdata.userlist.get(u2))
     introFrame.destroy() # introFrame is where you recieve the introduction message. Now that the game has begun, we delete it.
+    frame=Frame(game_window,bg='#000')
+    frame.pack()
+    frame.pack_propagate(0)
+    
+    Label(frame,bg="#000",fg="#fff",text='Select you tank', font=(None,20)).grid(row=0,column=1,columnspan = 2)
+    Label(frame,bg="#000",fg="#fff",text=f'{w1}').grid(row=1,column=1)
+    Label(frame,bg="#000",fg="#fff",text=f'{w2}').grid(row=1,column=2)
+    
+    w1Canvas = Canvas(frame,bg='#000')
+    w1Canvas.grid(row = 2, column = 1)
+    
+    blue1=Canvas(w1Canvas, bg='#000', width=150, highlightbackground = "#000")
+    blue1.grid(row=1,column=1)
+    green1=Canvas(w1Canvas, bg='#000', width=150, highlightbackground = "#000")
+    green1.grid(row=1,column=2)
+    red1=Canvas(w1Canvas, bg='#000', width=150, highlightbackground = "#000")
+    red1.grid(row=2,column=1)
+    orange1=Canvas(w1Canvas, bg='#000', width=150, highlightbackground = "#000")
+    orange1.grid(row=2,column=2)
+    
+    w2Canvas = Canvas(frame,bg='#000')
+    w2Canvas.grid(row = 2, column = 2)
+    
+    blue2=Canvas(w2Canvas, bg='#000', width=150, highlightbackground = "#000")
+    blue2.grid(row=1,column=3)
+    green2=Canvas(w2Canvas, bg='#000', width=150, highlightbackground = "#000")
+    green2.grid(row=1,column=4)
+    red2=Canvas(w2Canvas, bg='#000', width=150, highlightbackground = "#000")
+    red2.grid(row=2,column=3)
+    orange2=Canvas(w2Canvas, bg='#000', width=150, highlightbackground = "#000")
+    orange2.grid(row=2,column=4)
+    
+    def setColour(canvas,tank,colour):
+        tank.colour = colour
+        if tank == w1:
+            for i in [blue1,green1,red1,orange1]:
+                if i == canvas: continue
+                else: i.config(highlightbackground = "#000")
+        else:
+            for i in [blue2,green2,red2,orange2]:
+                if i == canvas: continue
+                else: i.config(highlightbackground = "#000")
+        canvas.config(highlightbackground = 'yellow')
+        
+    w1.tank(blue1,"blue")
+    w1.tank(red1,"red")
+    w1.tank(green1,"green")
+    w1.tank(orange1,"orange")
+    w2.tank(blue2,"blue")
+    w2.tank(red2,"red")
+    w2.tank(green2,"green")
+    w2.tank(orange2,"orange")
+    
+    blue1.bind("<Button-1>",lambda x: setColour(blue1,w1,'blue'))
+    red1.bind("<Button-1>",lambda x: setColour(red1,w1,'red'))
+    green1.bind("<Button-1>",lambda x: setColour(green1,w1,'green'))
+    orange1.bind("<Button-1>",lambda x: setColour(orange1,w1,'orange'))
+    blue2.bind("<Button-1>",lambda x: setColour(blue2,w2,'blue'))
+    red2.bind("<Button-1>",lambda x: setColour(red2,w2,'red'))
+    green2.bind("<Button-1>",lambda x: setColour(green2,w2,'green'))
+    orange2.bind("<Button-1>",lambda x: setColour(orange2,w2,'orange'))
+    
+    Button(frame,text="OK",command = lambda: LoadGame(frame)).grid(row=3,column=1,columnspan=2)
+    
+def LoadGame(frame):
+    global p1,p2,hp1,hp2,a1,a2,a3,a4,messagebox,hb1,hb2,canvas2x,TankA,TankB,w1,w2,canvas73,game_window,l1,l2
+    frame.destroy()
 
-    mainCanvas = Canvas(game_window,height=250,width=400, bg='#000') # This is where all the graphical stuff will be stored
-    mainCanvas.pack()
-
-    canvas73=Canvas(mainCanvas,height=250,width=400,bg="#000") # Tanks, stars and game title is displayed here
+    canvas73=Canvas(game_window,height=250,width=400,bg="#000") # Tanks, stars and game title is displayed here
     canvas73.pack()
     frame=Frame(game_window)
     frame.pack()
@@ -125,8 +189,8 @@ def LoadGame(u1,u2):
 
     canvas2x = Canvas(game_window, bg="#000", width = 400, height = 7) # health bars
     canvas2x.pack()
-    hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.colour)
-    hb2=canvas2x.create_rectangle(400-w2.health*1.5,0,400,7,fill = w2.colour)
+    hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.hcolour)
+    hb2=canvas2x.create_rectangle(400-w2.health*1.5,0,400,7,fill = w2.hcolour)
 
     frame3 = Frame(game_window, bg = '#000') # this is where the messages are added
     frame3.pack()
@@ -153,8 +217,8 @@ def SetGame(): # this function will make display changes acc to GameState
 
     if GameState == 1: # ATTACK mode
         TankA, TankB = TankB, TankA
-        hp1.config(fg = w1.colour, text = w1.health) # don't display damage taken/heal etc now
-        hp2.config(fg = w2.colour, text = w2.health)
+        hp1.config(fg = w1.hcolour, text = w1.health) # don't display damage taken/heal etc now
+        hp2.config(fg = w2.hcolour, text = w2.health)
         if TankA == w1:
             p2.config(bg = '#222', fg = '#fff') # highlighting name and health labels according to active player
             p1.config(bg = '#000', fg = '#10ff00')
@@ -178,9 +242,6 @@ def SetGame(): # this function will make display changes acc to GameState
         a2.bind("<Leave>",lambda event: on_leave('a2',event))
         a3.bind("<Enter>",lambda event: on_enter('a3',event))
         a3.bind("<Leave>",lambda event: on_leave('a3',event))
-        #game_window.bind('replenish',heal) # Enabling cheat codes
-        #game_window.bind('annihilate',destroy)
-        #game_window.bind('eagleeye',focus)
         messagebox.config(text = f'It\'s {TankA}\'s turn to attack.')
 
     elif GameState == 10:
@@ -205,8 +266,8 @@ def SetGame(): # this function will make display changes acc to GameState
         
         canvas2x.delete(hb1) # delting original health bars
         canvas2x.delete(hb2)
-        hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.colour) # creating new health bars with updated health
-        hb2=canvas2x.create_rectangle(400-w2.health*1.5,0,400,7,fill = w2.colour)
+        hb1=canvas2x.create_rectangle(0,0,w1.health*1.5,7,fill = w1.hcolour) # creating new health bars with updated health
+        hb2=canvas2x.create_rectangle(400-w2.health*1.5,0,400,7,fill = w2.hcolour)
     
         if TankA == w1: # health bar of Player 2 displays damage taken
             hp2.config(fg = '#bcff00', text = f'-{dmg}')
@@ -223,8 +284,8 @@ def SetGame(): # this function will make display changes acc to GameState
         canvas73.delete(TankB.base)
         canvas73.delete(TankB.behind)
         canvas73.delete(TankB.front)
-        hp1.config(fg = w1.colour, text = w1.health) # don't display damage taken/heal etc now
-        hp2.config(fg = w2.colour, text = w2.health)
+        hp1.config(fg = w1.hcolour, text = w1.health) # don't display damage taken/heal etc now
+        hp2.config(fg = w2.hcolour, text = w2.health)
         winScreen()
         if not TankA.cheat: # cheating means your player stats won't be updated
             x = 3 if TankB.cheat else 1 # if the opponent was cheating but you still won, you deserve bonus XP!
@@ -262,7 +323,7 @@ class Tank:
         return self.name # i.e. You just have to write down the 'object' instead of 'object.name' to add it's name to strings
 
     @property # this means self.colour is a property just like self.health and self.name and not a method self.colour()
-    def colour(self): # it is created as a method property because it is dependent on health and is to be reassigned whenever health changes
+    def hcolour(self): # it is created as a method property because it is dependent on health and is to be reassigned whenever health changes
         if self.health < 35: self.blow()
         if self.health > 70: return '#10ff00'
         elif self.health > 60: return '#55ff00'
@@ -274,23 +335,21 @@ class Tank:
         
     def blow(self): pass
 
-    def tank(self):
+    def tank(self,master,colour):
+        self.colour = colour
         if w1==self:
-            self.base=canvas73.create_rectangle(0,150,75,225,fill="#008000",outline="#008000")
-            self.top=canvas73.create_rectangle(30,100,50,150,fill="#008000",outline="#008000")
-            self.turret=canvas73.create_rectangle(50,125,75,135,fill="#008000",outline="#008000")
-            self.front=canvas73.create_polygon([75,150,75,225,100,225,75,150],fill="green")
-            self.behind=canvas73.create_polygon([0,150,0,70,75,90,20,90,20,150,0,150],fill="green")
-            #for i in range(0,150):
-            #    canvas73.create_line(75,75+i,120-i,225,fill="#008000")
+            self.base=master.create_rectangle(0,150,75,225,fill=self.colour,outline=self.colour)
+            self.top=master.create_rectangle(30,100,50,150,fill=self.colour,outline=self.colour)
+            self.turret=master.create_rectangle(50,125,75,135,fill=self.colour,outline=self.colour)
+            self.front=master.create_polygon([75,150,75,225,100,225,75,150],fill=self.colour)
+            self.behind=master.create_polygon([0,150,0,70,75,90,20,90,20,150,0,150],fill=self.colour)
         else:
-            self.base=canvas73.create_rectangle(325,150,400,225,fill="#ff0000",outline="#ff0000")
-            self.top=canvas73.create_rectangle(350,100,370,150,fill="#ff0000",outline="#ff0000")
-            self.turret=canvas73.create_rectangle(325,125,350,135,fill="#ff0000",outline="#ff0000")
-            self.front=canvas73.create_polygon([325,150,325,225,300,225,325,150],fill="red")
-            self.behind=canvas73.create_polygon([400,150,400,70,325,90,380,90,380,150,400,150],fill="red")
-            #for i in range(0,150):
-            #    canvas73.create_line(280+i,225,325,75+i,fill="#ff0000")
+            x = int(master['width'])
+            self.base=master.create_rectangle(x-75,150,x,225,fill=self.colour,outline=self.colour)
+            self.top=master.create_rectangle(x-50,100,x-30,150,fill=self.colour,outline=self.colour)
+            self.turret=master.create_rectangle(x-75,125,x-50,135,fill=self.colour,outline=self.colour)
+            self.front=master.create_polygon([x-75,150,x-75,225,x-100,225,x-75,150],fill=self.colour)
+            self.behind=master.create_polygon([x,150,x,70,x-75,90,x-20,90,x-20,150,x,150],fill=self.colour)
 
     def move_tank(self):
         x = 1 if self == w1 else -1
@@ -300,7 +359,19 @@ class Tank:
         canvas73.move(self.behind,x,0)
         canvas73.move(self.front,x,0)
         canvas73.after(10,self.move_tank)
-                
+    def delete_shield(self):
+        canvas73.delete(player_shield)    
+    
+    def shield(self):
+        global player_shield
+        if self==w1:
+            player_shield=canvas73.create_polygon([100,125,120,125,150,150,120,170,150,200,120,225,100,225,100,125],fill=self.colour)
+            canvas73.after(1000,self.delete_shield)   
+        else:
+            x = int(canvas73['width'])
+            player_shield=canvas73.create_polygon([x-100,125,x-120,125,x-150,150,x-120,170,x-150,200,x-120,225,x-100,225,x-100,215],fill=self.colour)
+            canvas73.after(1000,self.delete_shield)
+            
 class beam:
     def __init__(self):
         if TankA == w1:
@@ -316,6 +387,8 @@ class beam:
             blast(self)
             ChangeGameState()
             return
+        if self.a < 10: canvas73.move(TankA.turret, -self.x/4, 0)
+        elif self.a < 20: canvas73.move(TankA.turret, self.x/4, 0)
         self.a += 1
         canvas73.move(self.laser, self.x, 0)
         canvas73.after(10, self.move)
@@ -388,7 +461,9 @@ def GetDamage(): # final result of damage is calculated here
     global hit, TankA, TankB, dmg
     block = TankB.maxBlock*uniform(0.3,0.6)
     dmg = int(hit - block)
-    if dmg<=0: dmg=0
+    if dmg<=0:
+        dmg=0
+        TankB.shield()
     TankB.health -= dmg # reducing health by the amount of damage taken
     if TankB.health<=0: TankB.health=0
     ChangeGameState() # switching to TRANSITION mode
@@ -399,8 +474,8 @@ def LoadObjects():
     # STAR WARS
     for i in range(40):
         canvas73.create_text(400*random(),220*random(),fill="#fff",text="*")
-    w1.tank()
-    w2.tank()
+    w1.tank(canvas73,w1.colour)
+    w2.tank(canvas73,w2.colour)
     
     #ground
     ground=canvas73.create_rectangle(0,225,400,250,fill="#a52a2a")
