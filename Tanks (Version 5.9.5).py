@@ -13,7 +13,7 @@ if playerdata.version < 1.1:
     print("Please update playerdata.py")
     quit()
 
-version = '5.9.4'
+version = '5.9.5'
 
 try:
     from tkinter import *
