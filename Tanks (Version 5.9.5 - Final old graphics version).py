@@ -401,14 +401,14 @@ class blast:
         self.x = 0
         x1,y1,x2,y2 = canvas73.coords(laser.laser)
         x, y = (x1+x2)/2, (y1+y2)/2
-        self.a = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.b = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.c = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.d = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.e = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.f = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.g = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
-        self.h = canvas73.create_text(x,y, text = "*", fill="yellow",font=(None,20))
+        self.a = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.b = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.c = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.d = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.e = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.f = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.g = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
+        self.h = canvas73.create_text(x,y, text = ".", fill="yellow",font=(None,20))
         canvas73.delete(laser.laser)
         self.move()
     def move(self):

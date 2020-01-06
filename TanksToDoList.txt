@@ -1,0 +1,9 @@
+FUTURE PLANS:
+1.Add  sound effects(use winsound or gtts) - k
+2.Move tanks in  the beginning - k
+3.Move tanks up and down to position turrets and shoot to  create the uncertainty logically - unassigned
+4.Add optional Single Player mode with bot opponent - y'
+
+ADDITIONAL FEATURES TO BE INCLUDED IN SINGLE PLAYER MODE:
+1.Add story mode - k
+2.Add  levels - y'

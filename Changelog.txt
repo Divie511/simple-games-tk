@@ -1,0 +1,11 @@
+6/1/2020:
+Resized tank graphics
+Fixed the enter button error
+Fixed beam symmetry
+Repositioned blast
+Minor bug fixed
+Fixed attack description for upgraded abilities
+Shield will now always be present and is capable of blocking the beam!
+Replaced colours with their hex codes
+Made all labels linked to objects
+Added dynamic health bars and fixed health bars length
