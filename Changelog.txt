@@ -1,11 +1,52 @@
+TANKS CHANGELOG:
+
+8/1/2020:
+Added time limit for attack
+Minor text position change
+Replaced OK buttons with label "Press enter to continue..."
+Added new tank shield!
+Added effect of damage on tank!
+
+7/1/2020:
+Fixed selection menu canvas size
+Replaced buttons with labels for better experience on macOS
+
 6/1/2020:
-Resized tank graphics
+Resized and recreated tank graphics!
 Fixed the enter button error
 Fixed beam symmetry
-Repositioned blast
+Repositioned blast spark
 Minor bug fixed
 Fixed attack description for upgraded abilities
 Shield will now always be present and is capable of blocking the beam!
 Replaced colours with their hex codes
-Made all labels linked to objects
-Added dynamic health bars and fixed health bars length
+Made all labels linked to objects for better organised code
+Added DYNAMIC health bars(!) and corrected health bars length
+
+5/1/2020:
+Made tank turret RECOIL on attack!
+Changed the look of blast spark
+Changed tank selection menu (SUPER COOL!)
+Redefined tank coordinates so they could fit in any frame
+The beam stops on shield and no more touches the opponent tank if attack was blocked or inaccurate
+
+4/1/2020:
+Removed cheat codes
+Some more cool stuff was added
+
+1/1/2020: *NEW YEAR'S UPDATE!!* THIS IS THE GREATEST UPDATE EVER!!!
+Added DYNAMIC attack beam!!
+Added BLAST SPARK when the beam hits the opponent tank!
+Attack description will now be visible ON MOUSE HOVER over attack buttons!
+Added an AWESOME ending screen with MOVING tank!
+Removed tank shield
+Removed instructions from intro screen
+
+CHANGELOG FOR OLDER UPDATES WAS NOT RECORDED
+
+version 1 was created on 25th October 2019 and was a code of just 125 lines!
+It did not have any graphical Tanks in it but only attack buttons and messages of damage taken were printed on screen.
+version 2 took a step ahead by not being dependent on python shell but everything taking place in one window.
+The progress was very quick at that time with new grand updates every now and then.
+version 3 was the first update to feature health bars but it wasn't until on October 28th that graphical tanks were added to the game with the release of version 4.
+version 4 not only added graphic to the game, but also was the first update to support a database for user statistics and cheat codes.

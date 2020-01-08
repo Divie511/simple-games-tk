@@ -13,7 +13,7 @@ if playerdata.version < 1.1:
     print("Please update playerdata.py")
     quit()
 
-version = '5.9.8'
+version = '5.9.8.2'
 
 try:
     from tkinter import *
@@ -362,11 +362,16 @@ class Tank:
         self.namelabel.config(bg = '#222', fg = '#fff')
         self.healthlabel.config(bg = '#222')
         self.levellabel.config(bg = '#222')
-        if self==w1:
-            self.shield=canvas73.create_polygon([55,150,55,160,80,160,80,200,90,200,90,150,55,150],fill=self.colour)
-        else:
+        if self==w1 and self.health>(self.maxHealth/2):
+            self.shield=canvas73.create_polygon([55,150,55,160,80,160,80,200,90,200,110,175,90,150,55,150],fill=self.colour)
+        elif self==w1:
+            self.shield=canvas73.create_polygon([50,170,50,160,80,160,80,200,90,200,90,150,45,150,45,170,50,170],fill=self.colour)
+        elif self==w2 and self.health>(self.maxHealth/2):
             x = int(canvas73['width'])
-            self.shield=canvas73.create_polygon([x-55,150,x-55,160,x-80,160,x-80,200,x-90,200,x-90,150,x-55,150],fill=self.colour)
+            self.shield=canvas73.create_polygon([x-55,150,x-55,160,x-80,160,x-80,200,x-90,200,x-110,175,x-90,150,x-55,150],fill=self.colour)
+        else:
+            x=int(canvas73['width'])
+            self.shield=canvas73.create_polygon([x-50,170,x-50,160,x-80,160,x-80,200,x-90,200,x-90,150,x-45,150,x-45,170,50,170],fill=self.colour)
             
     def takeDamage(self):
         x = -1 if self == w1 else 1
@@ -388,7 +393,7 @@ class beam:
             blast(self)
             ChangeGameState()
             return
-        if self.a < 10: canvas73.move(TankA.turret, -self.x/4, 0)
+        if self.a < 10: canvas73.move(TankA.turret, -self.x/4, 0)#recoil
         elif self.a < 20: canvas73.move(TankA.turret, self.x/4, 0)
         self.a += 1
         canvas73.move(self.laser, self.x, 0)
@@ -409,6 +414,10 @@ class blast:
         self.g = canvas73.create_text(x,y, text = ".", fill="#ffff00",font=(None,20))
         self.h = canvas73.create_text(x,y, text = ".", fill="#ffff00",font=(None,20))
         canvas73.delete(laser.laser)
+        if TankB.health<(TankB.maxHealth/2):
+            canvas73.delete(TankB.behind_upper)
+        if TankB.health<(TankB.maxHealth/10):
+            canvas73.delete(TankB.behind)
         self.move()
     def move(self):
         if self.x == 20:
@@ -466,7 +475,6 @@ def atk3(*args):
 
 def GetDamage(): # final result of damage is calculated here
     global hit, TankA, TankB, dmg
-    timer.pause()
     block = TankB.maxBlock*uniform(0.3,0.6)
     dmg = int(hit - block)
     if dmg<=0: dmg=0

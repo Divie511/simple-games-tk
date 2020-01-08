@@ -1,5 +1,9 @@
+"Hi there! Seems you came here looking for our game TANKS, right? I must tell you that you are not looking at the right file..."
+"playerdata.py is just a support file for TANKS which stores statistics from the game."
+"Messing around with this file may ruin you game progress in TANKS... So please close this file and enjoy, TANKS!"
+
 import math
-version = 1.1
+version = 1.2
 
 class Player:
     
@@ -11,9 +15,6 @@ class Player:
     @property
     def level(self):
         return 1 + int(math.log(self.xp,1.8))
-    @property
-    def accuracy(self):
-        return 1 + self.level/10
     @property
     def maxHealth(self):
         return 99 + int((self.level)*(self.level+1)/2)
@@ -216,3 +217,21 @@ _.xp+=1
 _.xp+=1
 _.xp+=1
 _.xp+=1
+_.xp+=1
+_.xp+=1
+Batman.xp+=1
+_.xp+=1
+Divyam.xp+=1
+_.xp+=1
+_.xp+=1
+_.xp+=1
+_.xp+=1
+_.xp+=1
+_.xp+=1
+_.xp+=1
+Divyam.xp+=1
+_.xp+=1
+Batman.xp+=1
+_.xp+=1
+Divyam.xp+=1
+Divyam.xp+=1
