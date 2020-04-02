@@ -1,9 +1,3 @@
-VERSION 6:
-1.Bug fixes - y'
-2.Add time limit to attack. Your turn will be skipped if you don't make a move within 15 seconds. - y'
-3.Higher level tanks will develop some special protective covers or better turrets (of slightely different colour shade for visibility) - k
-4.A certain part of the tank gets damaged/broken when health<30.
-
 FUTURE PLANS:
 1.Add  sound effects(use winsound or gtts) - k
 2.Move tanks in  the beginning - k
